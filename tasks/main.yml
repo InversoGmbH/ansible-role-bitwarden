@@ -6,31 +6,32 @@
   package:
     name: epel-release
     state: installed
+  when: bitwarden_install_epel == true
+
 - name: install the latest version of docker, docker-compose and unzip
   package:
-    name:
-      - docker
-      - docker-compose
-      - unzip
-      - python-pip
-      - mod_ssl
-      - openssl
-    state: latest
+    name: '{{ bitwarden_packages }}'
+    state: '{{ bitwarden_packages_state }}'
+  when: bitwarden_packages | length > 0
+
 - name: upgrade version of pip to latest
   pip:
     name: pip
     state: latest
+  when: bitwarden_update_pip == true  
+
 - name: Start docker service
   service:
     name: docker
     state: started
     enabled: yes
+    
 
 # Step 1
 # Download a stubbed version of Bitwarden’s dependencies (docker-stub.zip) from the releases pages on GitHub.
 - name: Download docker compose file
   get_url:
-    url: https://github.com/bitwarden/server/releases/download/v1.32.0/docker-stub.zip
+    url: https://github.com/bitwarden/server/releases/download/v1.32.0/docker-stub.zip #TODO variable for dynamic version
     dest: /root/docker-stub.zip
     mode: 0777
 

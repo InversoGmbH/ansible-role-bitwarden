@@ -1,2 +1,15 @@
 ---
 # defaults file for ansible-role-bitwarden
+#
+bitwarden_install_epel: True
+bitwarden_update_pip: True
+
+bitwarden_packages:
+  - docker
+  - docker-compose
+  - unzip
+  - python-pip
+  - mod_ssl
+  - openssl
+
+bitwarden_packages_state: 'latest'
